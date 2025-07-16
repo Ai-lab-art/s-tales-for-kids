@@ -1,9 +1,34 @@
 import { stories } from "@/data/stories";
 import { StoryCard } from "@/components/StoryCard";
 import { Card, CardContent } from "@/components/ui/card";
-import { BookOpen, Star, Heart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { BookOpen, Star, Heart, Facebook, Twitter, MessageCircle, Share2 } from "lucide-react";
 
 const Index = () => {
+  const shareUrl = window.location.href;
+  const shareText = "Check out these amazing magical stories for children!";
+  
+  const handleShare = (platform: string) => {
+    let url = '';
+    switch (platform) {
+      case 'facebook':
+        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+        break;
+      case 'twitter':
+        url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
+        break;
+      case 'whatsapp':
+        url = `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`;
+        break;
+      case 'messenger':
+        url = `https://www.facebook.com/dialog/send?link=${encodeURIComponent(shareUrl)}`;
+        break;
+      default:
+        return;
+    }
+    window.open(url, '_blank', 'width=600,height=400');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-story-secondary/20 to-story-warm/20">
       {/* Header */}
@@ -14,9 +39,46 @@ const Index = () => {
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-story-primary to-story-accent bg-clip-text text-transparent mb-4">
               Magical Stories for Children
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
               Discover wonderful tales filled with adventure, friendship, and important life lessons
             </p>
+            
+            {/* Share Buttons */}
+            <div className="flex justify-center items-center gap-3">
+              <span className="text-sm text-muted-foreground mr-2">Share:</span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleShare('facebook')}
+                className="hover:bg-blue-50 hover:border-blue-300"
+              >
+                <Facebook className="w-4 h-4 text-blue-600" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleShare('twitter')}
+                className="hover:bg-sky-50 hover:border-sky-300"
+              >
+                <Twitter className="w-4 h-4 text-sky-500" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleShare('whatsapp')}
+                className="hover:bg-green-50 hover:border-green-300"
+              >
+                <MessageCircle className="w-4 h-4 text-green-600" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleShare('messenger')}
+                className="hover:bg-blue-50 hover:border-blue-300"
+              >
+                <Share2 className="w-4 h-4 text-blue-500" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
